@@ -251,14 +251,13 @@ void init(void)
 
     beta =  0.0f;
     alfa =  0.0f;
-    r=50;
 
     glutSetCursor(GLUT_CURSOR_NONE); //Desactiva el culsor
 
     paso = 0.01f;
     eyex = 0.001;
     eyey = 0.001;
-    eyez = 1.7;
+    eyez = 0.05;
 
     zfar=1000;// distancia maxima
     znear=0.01;
@@ -283,200 +282,7 @@ void init(void)
         keypressed[i]=false;
         specialpressed[i]=false;
     }
-}
-void keyoperations()
-{
 
-    //teclas de entorno
-    if (keypressed[27])
-    {
-        exit(0);
-    }
-    if (keypressed['f'] || keypressed['F'])
-    {
-        glutFullScreen();
-
-        reshape(glutGet(GLUT_WINDOW_WIDTH),glutGet(GLUT_WINDOW_HEIGHT));
-    }
-
-    //teclas de movimiento
-    if (keypressed['w'] || keypressed['W'])
-    {
-        if(Ccenital!=1)
-        {
-                eyex +=paso*cos(alfa);
-                eyey +=paso*sin(alfa);
-
-            CalcFirstPersonPos();
-            andando=1;
-        }
-    }
-    if (keypressed['a'] || keypressed['A'])
-    {
-        if(Ccenital!=1)
-        {
-
-                eyex =eyex-(paso*sin(alfa));
-                eyey =eyey+(paso*cos(alfa));
-            CalcFirstPersonPos();
-            andando=1;
-        }
-    }
-    if (keypressed['s'] || keypressed['S'])
-    {
-        if(Ccenital!=1)
-        {
-
-                eyex -=paso*cos(alfa);
-                eyey -=paso*sin(alfa);
-           CalcFirstPersonPos();
-            andando=1;
-        }
-    }
-    if (keypressed['d'] || keypressed['D'])
-    {
-        if(Ccenital!=1)
-        {
-
-                eyex =eyex + (paso*sin(alfa));
-                eyey =eyey - (paso*cos(alfa));
-            CalcFirstPersonPos();
-            andando=1;
-        }
-    }
-    if (keypressed['r'] || keypressed['R'])
-    {
-        if(Ccenital!=1)
-        {
-            eyex=0.0;//recolocar en la poscion inicial
-            eyey=45.0;
-            alfa=-90.0;
-            beta =0.0;
-        }
-    }
-
-    //Teclas de camara
-    if (specialpressed[GLUT_KEY_RIGHT])
-    {
-        alfa-=0.08;//solo actualizamos los valores de alpha y beta
-      //  CalcFirstPersonPos();
-    }
-    if (specialpressed[GLUT_KEY_LEFT])
-    {
-        alfa+=0.08;//solo actualizamos los valores de alpha y beta
-       // CalcFirstPersonPos();
-    }
-    if (specialpressed[GLUT_KEY_UP])
-    {
-        if(beta>-1.48353)  //-1,48 son -85 grados en radianes
-        {
-            beta-=0.08;//limitamos a -85º
-        }
-        // CalcFirstPersonPos();
-    }
-
-    if (specialpressed[GLUT_KEY_DOWN])
-    {
-        if(beta<1.48353)  //1,48 son 85 grados en radianes
-        {
-            beta+=0.08;//limitar a +85
-        }
-       //  CalcFirstPersonPos();
-    }
-}
-void displayString(char *s)
-{
-    for (int i = 0; i < strlen (s); i++)
-    {
-        glutBitmapCharacter (GLUT_BITMAP_HELVETICA_10, s[i]);
-    }
-}
-void setOrthographicProjection()
-{
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-    glDepthMask(GL_FALSE);
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    gluOrtho2D(0,ancho,alto,0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //gluOrtho2D(0, alto, ancho, 0);
-
-
-}
-void resetPerspectiveProjection()
-{
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    //glMatrixMode(GL_MODELVIEW);
-    glDepthMask(GL_TRUE);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-}
-
-void HUD(){
-    if(HUDO==1)
-    {
-
-        ancho = glutGet(GLUT_WINDOW_WIDTH);
-        alto  = glutGet(GLUT_WINDOW_HEIGHT);
-        char cadena[]="Salida";
-        setOrthographicProjection();
-
-
-        glEnd();
-        glColor4f(0.0,0.0,0.0,0.7);
-        glBegin(GL_QUADS); //Cuadro de infirmacion
-        glVertex2f(10,10);
-        glVertex2f(220.0,10);
-        glVertex2f(220.0,150.0);
-        glVertex2f(10.0,150.0);
-        glEnd();
-        glColor4f(1.0,1.0,1.0,1.0);
-        glRasterPos2i(30,30);
-        displayString("TECLAS:\n");
-        glRasterPos2i(30,40);
-        displayString("W: avance");
-        glRasterPos2i(30,50);
-        displayString("S: retorceso");
-        glRasterPos2i(30,60);
-        displayString("A: movimiento a la izquierda");
-        glRasterPos2i(30,70);
-        displayString("D: movimiento a la derecha");
-        glRasterPos2i(30,80);
-        displayString("C: alternar vista entre camaras");
-        glRasterPos2i(30,90);
-        displayString("F: guardar imagen");
-        glRasterPos2i(30,100);
-        displayString("R: volver a posicion inicial");
-        glRasterPos2i(30,110);
-        displayString("Esc: salir");
-        glRasterPos2i(30,120);
-        displayString("M: deterner musica y reanudar la musica");
-        glRasterPos2i(30,130);
-        displayString("H: cerrar panel informacion");
-        glRasterPos2i(30,140);
-        displayString("P: cambiar vista");
-
-        resetPerspectiveProjection();
-    }
-
-
-}
-/* Funcion que se llamara cada vez que se dibuje en pantalla */
-void display(void)
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    GLfloat difusa[] = {1.0f, 1.0f, 1.0f, 1.0f};// luz blanca
-    GLfloat posicion0[]= {0.1f, 0.5f, 0.3f, 0.5f};// posición en la escena
 
     /*se cargan los objetos en la lista de visualización*/
 
@@ -659,6 +465,192 @@ void display(void)
 
 }
 
+void keyoperations()
+{
+
+    //teclas de entorno
+    if (keypressed[27])
+    {
+        exit(0);
+    }
+    if (keypressed['f'] || keypressed['F'])
+    {
+        glutFullScreen();
+
+        reshape(glutGet(GLUT_WINDOW_WIDTH),glutGet(GLUT_WINDOW_HEIGHT));
+    }
+
+    //teclas de movimiento
+    if (keypressed['w'] || keypressed['W'])
+    {
+        if(Ccenital!=1)
+        {
+                eyex +=paso*cos(alfa);
+                eyey +=paso*sin(alfa);
+
+            CalcFirstPersonPos();
+            andando=1;
+        }
+    }
+    if (keypressed['a'] || keypressed['A'])
+    {
+        if(Ccenital!=1)
+        {
+
+                eyex =eyex-(paso*sin(alfa));
+                eyey =eyey+(paso*cos(alfa));
+            CalcFirstPersonPos();
+            andando=1;
+        }
+    }
+    if (keypressed['s'] || keypressed['S'])
+    {
+        if(Ccenital!=1)
+        {
+
+                eyex -=paso*cos(alfa);
+                eyey -=paso*sin(alfa);
+           CalcFirstPersonPos();
+            andando=1;
+        }
+    }
+    if (keypressed['d'] || keypressed['D'])
+    {
+        if(Ccenital!=1)
+        {
+
+                eyex =eyex + (paso*sin(alfa));
+                eyey =eyey - (paso*cos(alfa));
+            CalcFirstPersonPos();
+            andando=1;
+        }
+    }
+    if (keypressed['r'] || keypressed['R'])
+    {
+        if(Ccenital!=1)
+        {
+            eyex=0.0;//recolocar en la poscion inicial
+            eyey=45.0;
+            alfa=-90.0;
+            beta =0.0;
+        }
+    }
+
+    //Teclas de camara
+    if (specialpressed[GLUT_KEY_RIGHT])
+    {
+        alfa-=0.08;//solo actualizamos los valores de alpha y beta
+        CalcFirstPersonPos();
+    }
+    if (specialpressed[GLUT_KEY_LEFT])
+    {
+        alfa+=0.08;//solo actualizamos los valores de alpha y beta
+        CalcFirstPersonPos();
+    }
+    if (specialpressed[GLUT_KEY_UP])
+    {
+        if(beta<1.48)
+        {
+            beta+=0.08;//limitamos a -85º
+        }
+         CalcFirstPersonPos();
+    }
+
+    if (specialpressed[GLUT_KEY_DOWN])
+    {
+        if(beta<1.48)
+        {
+            beta-=0.08;//limitar a +85
+        }
+         CalcFirstPersonPos();
+    }
+}
+void displayString(char *s)
+{
+    for (int i = 0; i < strlen (s); i++)
+    {
+        glutBitmapCharacter (GLUT_BITMAP_HELVETICA_10, s[i]);
+    }
+}
+void setOrthographicProjection()
+{
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0,ancho,alto,0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //gluOrtho2D(0, alto, ancho, 0);
+
+}
+void resetPerspectiveProjection()
+{
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    //glMatrixMode(GL_MODELVIEW);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void HUD(){
+    if(HUDO==1)
+    {
+
+        ancho = glutGet(GLUT_WINDOW_WIDTH);
+        alto  = glutGet(GLUT_WINDOW_HEIGHT);
+        char cadena[]="Salida";
+        setOrthographicProjection();
+
+
+        glEnd();
+        glColor4f(0.0,0.0,0.0,0.7);
+        glBegin(GL_QUADS); //Cuadro de infirmacion
+        glVertex2f(10,10);
+        glVertex2f(220.0,10);
+        glVertex2f(220.0,150.0);
+        glVertex2f(10.0,150.0);
+        glEnd();
+        glColor4f(1.0,1.0,1.0,1.0);
+        glRasterPos2i(30,30);
+        displayString("TECLAS:\n");
+        glRasterPos2i(30,40);
+        displayString("W: avance");
+        glRasterPos2i(30,50);
+        displayString("S: retorceso");
+        glRasterPos2i(30,60);
+        displayString("A: movimiento a la izquierda");
+        glRasterPos2i(30,70);
+        displayString("D: movimiento a la derecha");
+        glRasterPos2i(30,80);
+        displayString("C: alternar vista entre camaras");
+        glRasterPos2i(30,90);
+        displayString("F: guardar imagen");
+        glRasterPos2i(30,100);
+        displayString("R: volver a posicion inicial");
+        glRasterPos2i(30,110);
+        displayString("Esc: salir");
+        glRasterPos2i(30,120);
+        displayString("M: deterner musica y reanudar la musica");
+        glRasterPos2i(30,130);
+        displayString("H: cerrar panel informacion");
+        glRasterPos2i(30,140);
+        displayString("P: cambiar vista");
+
+        resetPerspectiveProjection();
+    }
+
+
+}
+
 /* Funcion que se llamara cada vez que se dibuje en pantalla */
 void display(void)
 {
@@ -700,9 +692,6 @@ void display(void)
     glCallList(casa1DL);
     glCallList(casa2DL);
     glCallList(pozoDL);
-
-
-
 
 
     Mix_Chunk *pisada;
