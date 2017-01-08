@@ -23,16 +23,25 @@ GLfloat angx,angy,angz;
 GLfloat alfa, beta;
 GLfloat upz=1.0;;
 GLdouble xesf1,yesf1,zesf1,eyex,eyey,eyez,atx,aty,atz;
-GLfloat paso;
-GLdouble znear=0.001f,r;
+
+GLfloat paso=0.05f;
+GLdouble znear= 0.001f;
+
 GLfloat tamobj= 0.2;
 float zfar;
+
 
 //Usuo de teclado avanzado
 bool keypressed[256];
 bool specialpressed[256];
 //Raton
 void PasiveMouse(int x, int y);
+
+/*definiciones para las listas de visualización*/
+GLuint fortalezaDL;
+GLuint casa1DL;
+GLuint casa2DL;
+GLuint pozoDL;
 
 //variable para el sonido
 int andando=0;
@@ -75,8 +84,8 @@ int numVertices,numSuperficies;
 
 
 
-void lecturaObjeto(){
-    objeto.open("objeto.ase",ios::in);
+void lecturaObjeto(char* nombreFichero){
+    objeto.open(nombreFichero,ios::in);
     string tag;
     double x,y,z,nx,ny,nz;
     int A,B,C,i,aux=0;
@@ -111,7 +120,7 @@ void lecturaObjeto(){
 
             objeto >> numVertices;
             vertices = (Punto3D*) malloc(numVertices*sizeof(Punto3D));
-            printf(" numVertices: %d",numVertices);
+            //printf(" numVertices: %d",numVertices);
             aux=0;
             break;
 
@@ -119,7 +128,7 @@ void lecturaObjeto(){
 
             objeto >> numSuperficies;
             superficies= (Superficie3D*) malloc(numSuperficies*sizeof(Superficie3D));
-            printf(" numSuperficies: %d",numSuperficies);
+            //printf(" numSuperficies: %d",numSuperficies);
             aux=0;
             break;
 
@@ -132,9 +141,9 @@ void lecturaObjeto(){
                 //        *MESH_VERTEX >> nº vertice >>>>>coordenadas
                 objeto >> tag >> tag >> x >> y >> z;
 
-                vertices[i].x=x; printf(" x: %f",x);
-                vertices[i].y=y; printf(" y: %f",y);
-                vertices[i].z=z; printf(" z: %f",z);
+                vertices[i].x=x; //printf(" x: %f",x);
+                vertices[i].y=y; //printf(" y: %f",y);
+                vertices[i].z=z; //printf(" z: %f",z);
             }
             aux = 0;
             break;
@@ -154,9 +163,9 @@ void lecturaObjeto(){
                 objeto >> tag >> B;
                 objeto >> tag >> C;
 
-                superficies[i].s.A = A; printf(" x: %d",A);
-                superficies[i].s.B = B; printf(" y: %d",B);
-                superficies[i].s.C = C; printf(" z: %d",C);
+                superficies[i].s.A = A; //printf(" x: %d",A);
+                superficies[i].s.B = B; //printf(" y: %d",B);
+                superficies[i].s.C = C; //printf(" z: %d",C);
                 }
                 aux=0;
             break;
@@ -172,9 +181,9 @@ void lecturaObjeto(){
         //       indice >>coordenadas
                 objeto >> tag >> nx >> ny >> nz;
 
-                superficies[i].n.nx = nx; printf(" nx: %f",nx);
-                superficies[i].n.ny = ny; printf(" ny: %f",ny);
-                superficies[i].n.nz = nz; printf(" nz: %f",nz);
+                superficies[i].n.nx = nx; //printf(" nx: %f",nx);
+                superficies[i].n.ny = ny; //printf(" ny: %f",ny);
+                superficies[i].n.nz = nz; //printf(" nz: %f",nz);
                 }
                 aux=0;
             break;
@@ -193,7 +202,7 @@ void CalculaPosEsferica(void){
     zesf1=cos(angx);
 
 
-    printf("COORDENADAS ESF : x= %f y= %f z= %f\n",xesf1,yesf1,zesf1);
+    //printf("COORDENADAS ESF : x= %f y= %f z= %f\n",xesf1,yesf1,zesf1);
 }
 void CalcFirstPersonPos(void){
 
@@ -466,51 +475,25 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(60.0, (float)ancho / alto, znear, 10);
-
     GLfloat difusa[] = {1.0f, 1.0f, 1.0f, 1.0f};// luz blanca
     GLfloat posicion0[]= {0.1f, 0.5f, 0.3f, 0.5f};// posición en la escena
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, difusa);      // Se asignan los parámetros
-    glLightfv(GL_LIGHT0, GL_POSITION, posicion0);
-    glEnable(GL_LIGHT0);                           // Se “enciende”la luz0
+    /*se cargan los objetos en la lista de visualización*/
 
-    glEnable(GL_LIGHTING);// Se activan los cálculos de la iluminación
-    glShadeModel(GL_FLAT);
-    // Aqui pondríamos la funcion gluLookAt si el observador se mueve
-    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0.0, 0.0, upz);
-    // Aqui se definen los objetos
-   // glTranslatef(250.0,300.0,0.0);
-    //glRotatef(angx,0,1,0);
-    //glutSolidTeapot(.20);
-    //glColor3f(0.80,0.80,0.80);
+
+    lecturaObjeto("fortaleza.ase");
+
+
+    fortalezaDL=glGenLists(1);
+    glNewList(fortalezaDL,GL_COMPILE);// ahora se define el objeto en la escena
+
     glPushMatrix();
-    //Suelo
-    glColor3f(0.80,0.40,0.40);
-    glTranslatef(0.0f,0.0f,-0.025f);
-    glScalef(2.0f,1.0f,0.1f);
-    glColor3f(0.80,0.40,0.40);
-    glutSolidCube(tamobj);
-    //pared izq
-    glScalef(1.0f,0.05f,1.2f);
-    glTranslatef(0.0f,1.975f,0.18f);
-    glutSolidCube(tamobj);
-    //pared der
-    glTranslatef(0.0f,-3.95f,0.0f);
-    glutSolidCube(tamobj);
-    //paredes laterales
-    glScalef(0.025f,20.0f,1.0f);
-    glTranslatef(3.95f,0.1f,0.0f);
-    glutSolidCube(tamobj);
-    glTranslatef(-7.9f,0.0f,0.0f);
-    glutSolidCube(tamobj);
-
-    glPopMatrix();
-
-    glTranslatef(0.0f,0.0f,-0.02f);
+    glTranslated(2,0.5,-0.02);
+    glRotated(-90,0,0,1);
     glScalef(0.0015,0.0015,0.0015);
+    // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
     glBegin(GL_TRIANGLES);
         for (int i = 0; i<numSuperficies; i++){
             glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
@@ -520,10 +503,206 @@ void display(void)
         }
         glEnd();
 
-    glFlush();
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
 
-      // a la luz 0
-    // Se define el modelo suave
+    //fin de carga de fortaleza
+    //carga de los siguientes objetos
+
+    lecturaObjeto("casa1.ase");
+
+    casa1DL=glGenLists(1);
+    glNewList(casa1DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(-1,1.5,-0.02);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("casa2.ase");
+
+    casa2DL=glGenLists(1);
+    glNewList(casa2DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(1.1,1.8,-0.02);
+    glRotated(-210,0,0,1);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0,-1.8,-0.02);
+    glRotated(-30,0,0,1);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("pozo.ase");
+
+    pozoDL=glGenLists(1);
+    glNewList(pozoDL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(-0.5,0.0,-0.02);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+
+    //suelo
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-0.08f);
+    glScaled(35 ,20,0.5);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //muroizq
+    glPushMatrix();
+    glTranslated(0.0,2,-0.08);
+    glScaled(35 ,1,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //muroder
+    glPushMatrix();
+    glTranslated(0.0,-2,-0.08);
+    glScaled(35 ,1,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //murofondo
+    glPushMatrix();
+    glTranslated(3.5,0.0,-0.08);
+    glScaled(1,20,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //murofrente
+    glPushMatrix();
+    glTranslated(-3.5,0.0,-0.08);
+    glScaled(1,20,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    //almenas
+    glPushMatrix();
+    glTranslated(3.5,2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-3.5,2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(3.5,-2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-3.5,-2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glEndList();
+
+}
+
+/* Funcion que se llamara cada vez que se dibuje en pantalla */
+void display(void)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, (float)ancho / alto, znear, 10);
+
+   //Iluminacion
+    GLfloat difusa[] = { 1.0f, 1.0f, 1.0f, 1.0f}; // luz blanca
+
+    GLfloat posicion0[] = { 50.0f, 25.0f, 10.0f, 0.0f}; // posición en la escena
+    GLfloat posicion2[] = {-50.0f, -25.0f, 10.0f, 0.0f};
+    GLfloat posicion3[] = {50.0f, -25.0f, 10.0f, 0.0f};
+
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, difusa); // Se asignan los parámetros
+    glLightfv(GL_LIGHT0, GL_POSITION, posicion0); // a la luz 0
+    glEnable(GL_LIGHT0); // Se “enciende” la luz 0
+
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, difusa); // Se asignan los parámetros
+    glLightfv(GL_LIGHT2, GL_POSITION, posicion2); // a la luz 2
+    glEnable(GL_LIGHT2); // Se “enciende” la luz 2
+
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, difusa); // Se asignan los parámetros
+    glLightfv(GL_LIGHT3, GL_POSITION, posicion3); // a la luz 2
+    glEnable(GL_LIGHT3); // Se “enciende” la luz 2
+
+    glEnable(GL_LIGHTING); // Se activan los cálculos de la iluminación
+    glShadeModel(GL_SMOOTH); // Se define el modelo suave
+
+    //Final iluminacion
+    // Aqui pondríamos la funcion gluLookAt si el observador se mueve
+    gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0.0, 0.0, upz);
+    // Aqui se definen los objetos
+
+    glCallList(fortalezaDL);
+    glCallList(casa1DL);
+    glCallList(casa2DL);
+    glCallList(pozoDL);
+
+
+
 
 
     Mix_Chunk *pisada;
