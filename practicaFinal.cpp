@@ -23,6 +23,11 @@ GLfloat paso=0.01f;
 GLdouble znear= 0.001f;
 GLfloat tamobj= 0.2;
 
+/*definiciones para las listas de visualización*/
+GLuint fortalezaDL;
+GLuint casa1DL;
+GLuint casa2DL;
+GLuint pozoDL;
 
 
 /*variables y estructuras de datos para practica3*/
@@ -59,8 +64,8 @@ int numVertices,numSuperficies;
 
 
 
-void lecturaObjeto(){
-    objeto.open("objeto.ase",ios::in);
+void lecturaObjeto(char* nombreFichero){
+    objeto.open(nombreFichero,ios::in);
     string tag;
     double x,y,z,nx,ny,nz;
     int A,B,C,i,aux=0;
@@ -198,7 +203,111 @@ void init(void)
 
     ancho = glutGet(GLUT_WINDOW_WIDTH);
     alto  = glutGet(GLUT_WINDOW_HEIGHT);
-    lecturaObjeto();
+
+
+
+    /*se cargan los objetos en la lista de visualización*/
+
+    lecturaObjeto("fortaleza.ase");
+
+
+    fortalezaDL=glGenLists(1);
+    glNewList(fortalezaDL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.06f,0.0f);
+    glScalef(0.0015,0.0015,0.0015);
+    // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    //fin de carga de fortaleza
+    //carga de los siguientes objetos
+
+    lecturaObjeto("casa1.ase");
+
+    casa1DL=glGenLists(1);
+    glNewList(casa1DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.04f,0.0f);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("casa2.ase");
+
+    casa2DL=glGenLists(1);
+    glNewList(casa2DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.02f,0.0f);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("pozo.ase");
+
+    pozoDL=glGenLists(1);
+    glNewList(pozoDL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,0.0f);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
 }
 
 /* Funcion que se llamara cada vez que se dibuje en pantalla */
@@ -206,7 +315,7 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluPerspective(60.0, (float)ancho / alto, znear, 10);
 
@@ -222,48 +331,14 @@ void display(void)
     // Aqui pondríamos la funcion gluLookAt si el observador se mueve
     gluLookAt(eyex, eyey, eyez, atx, aty, atz, 0.0, 0.0, upz);
     // Aqui se definen los objetos
-   // glTranslatef(250.0,300.0,0.0);
-    //glRotatef(angx,0,1,0);
-    //glutSolidTeapot(.20);
-    //glColor3f(0.80,0.80,0.80);
-    glPushMatrix();
-    //Suelo
-    glColor3f(0.80,0.40,0.40);
-    glTranslatef(0.0f,0.0f,-0.025f);
-    glScalef(2.0f,1.0f,0.1f);
-    glColor3f(0.80,0.40,0.40);
-    glutSolidCube(tamobj);
-    //pared izq
-    glScalef(1.0f,0.05f,1.2f);
-    glTranslatef(0.0f,1.975f,0.18f);
-    glutSolidCube(tamobj);
-    //pared der
-    glTranslatef(0.0f,-3.95f,0.0f);
-    glutSolidCube(tamobj);
-    //paredes laterales
-    glScalef(0.025f,20.0f,1.0f);
-    glTranslatef(3.95f,0.1f,0.0f);
-    glutSolidCube(tamobj);
-    glTranslatef(-7.9f,0.0f,0.0f);
-    glutSolidCube(tamobj);
 
-    glPopMatrix();
+    glCallList(fortalezaDL);
+    glCallList(casa1DL);
+    glCallList(casa2DL);
+    glCallList(pozoDL);
 
-    glTranslatef(0.0f,0.0f,-0.02f);
-    glScalef(0.0015,0.0015,0.0015);
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
 
-    glFlush();
 
-      // a la luz 0
-    // Se define el modelo suave
 
     glutSwapBuffers();
 }
@@ -272,7 +347,7 @@ void display(void)
 void reshape(int w, int h)
 {
     glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluOrtho2D(0, w, 0, h);
 }
