@@ -251,7 +251,7 @@ void init(void)
 
     beta =  0.0f;
     alfa =  0.0f;
-    r=50;
+    //r=50;
 
     glutSetCursor(GLUT_CURSOR_NONE); //Desactiva el culsor
 
@@ -283,6 +283,188 @@ void init(void)
         keypressed[i]=false;
         specialpressed[i]=false;
     }
+
+
+    //listas de visualizacion
+    /*se cargan los objetos en la lista de visualización*/
+
+    lecturaObjeto("fortaleza.ase");
+
+
+    fortalezaDL=glGenLists(1);
+    glNewList(fortalezaDL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(2,0.5,-0.02);
+    glRotated(-90,0,0,1);
+    glScalef(0.0015,0.0015,0.0015);
+    // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    //fin de carga de fortaleza
+    //carga de los siguientes objetos
+
+    lecturaObjeto("casa1.ase");
+
+    casa1DL=glGenLists(1);
+    glNewList(casa1DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(-1,1.5,-0.02);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("casa2.ase");
+
+    casa2DL=glGenLists(1);
+    glNewList(casa2DL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(1.1,1.8,-0.02);
+    glRotated(-210,0,0,1);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0,-1.8,-0.02);
+    glRotated(-30,0,0,1);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glEndList();
+
+    lecturaObjeto("pozo.ase");
+
+    pozoDL=glGenLists(1);
+    glNewList(pozoDL,GL_COMPILE);// ahora se define el objeto en la escena
+
+    glPushMatrix();
+    glTranslated(-0.5,0.0,-0.02);
+    glScalef(0.0015,0.0015,0.0015);
+   // glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 5);
+
+    glBegin(GL_TRIANGLES);
+        for (int i = 0; i<numSuperficies; i++){
+            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
+            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
+            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
+            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
+        }
+        glEnd();
+
+    glPopMatrix();
+
+    //suelo
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,-0.08f);
+    glScaled(35 ,20,0.5);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //muroizq
+    glPushMatrix();
+    glTranslated(0.0,2,-0.08);
+    glScaled(35 ,1,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //muroder
+    glPushMatrix();
+    glTranslated(0.0,-2,-0.08);
+    glScaled(35 ,1,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //murofondo
+    glPushMatrix();
+    glTranslated(3.5,0.0,-0.08);
+    glScaled(1,20,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+    //murofrente
+    glPushMatrix();
+    glTranslated(-3.5,0.0,-0.08);
+    glScaled(1,20,8);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    //almenas
+    glPushMatrix();
+    glTranslated(3.5,2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-3.5,2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(3.5,-2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-3.5,-2,-0.08);
+    glScaled(2,2,10);
+    glutSolidCube(tamobj);
+    glPopMatrix();
+
+    glEndList();
+
+
 }
 void keyoperations()
 {
@@ -468,194 +650,6 @@ void HUD(){
         resetPerspectiveProjection();
     }
 
-
-}
-/* Funcion que se llamara cada vez que se dibuje en pantalla */
-void display(void)
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    GLfloat difusa[] = {1.0f, 1.0f, 1.0f, 1.0f};// luz blanca
-    GLfloat posicion0[]= {0.1f, 0.5f, 0.3f, 0.5f};// posición en la escena
-
-    /*se cargan los objetos en la lista de visualización*/
-
-
-    lecturaObjeto("fortaleza.ase");
-
-
-    fortalezaDL=glGenLists(1);
-    glNewList(fortalezaDL,GL_COMPILE);// ahora se define el objeto en la escena
-
-    glPushMatrix();
-    glTranslated(2,0.5,-0.02);
-    glRotated(-90,0,0,1);
-    glScalef(0.0015,0.0015,0.0015);
-    // glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 5);
-
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
-
-    glPopMatrix();
-    //glDisable(GL_TEXTURE_2D);
-    glEndList();
-
-    //fin de carga de fortaleza
-    //carga de los siguientes objetos
-
-    lecturaObjeto("casa1.ase");
-
-    casa1DL=glGenLists(1);
-    glNewList(casa1DL,GL_COMPILE);// ahora se define el objeto en la escena
-
-    glPushMatrix();
-    glTranslated(-1,1.5,-0.02);
-    glScalef(0.0015,0.0015,0.0015);
-   // glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 5);
-
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
-
-    glPopMatrix();
-    //glDisable(GL_TEXTURE_2D);
-    glEndList();
-
-    lecturaObjeto("casa2.ase");
-
-    casa2DL=glGenLists(1);
-    glNewList(casa2DL,GL_COMPILE);// ahora se define el objeto en la escena
-
-    glPushMatrix();
-    glTranslated(1.1,1.8,-0.02);
-    glRotated(-210,0,0,1);
-    glScalef(0.0015,0.0015,0.0015);
-   // glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 5);
-
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
-
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(0,-1.8,-0.02);
-    glRotated(-30,0,0,1);
-    glScalef(0.0015,0.0015,0.0015);
-   // glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 5);
-
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
-
-    glPopMatrix();
-    //glDisable(GL_TEXTURE_2D);
-    glEndList();
-
-    lecturaObjeto("pozo.ase");
-
-    pozoDL=glGenLists(1);
-    glNewList(pozoDL,GL_COMPILE);// ahora se define el objeto en la escena
-
-    glPushMatrix();
-    glTranslated(-0.5,0.0,-0.02);
-    glScalef(0.0015,0.0015,0.0015);
-   // glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 5);
-
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i<numSuperficies; i++){
-            glNormal3d(superficies[i].n.nx,superficies[i].n.ny,superficies[i].n.nz);
-            glVertex3d(vertices[superficies[i].s.A].x,vertices[superficies[i].s.A].y,vertices[superficies[i].s.A].z);
-            glVertex3d(vertices[superficies[i].s.B].x,vertices[superficies[i].s.B].y,vertices[superficies[i].s.B].z);
-            glVertex3d(vertices[superficies[i].s.C].x,vertices[superficies[i].s.C].y,vertices[superficies[i].s.C].z);
-        }
-        glEnd();
-
-    glPopMatrix();
-
-    //suelo
-    glPushMatrix();
-    glTranslatef(0.0f,0.0f,-0.08f);
-    glScaled(35 ,20,0.5);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-    //muroizq
-    glPushMatrix();
-    glTranslated(0.0,2,-0.08);
-    glScaled(35 ,1,8);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-    //muroder
-    glPushMatrix();
-    glTranslated(0.0,-2,-0.08);
-    glScaled(35 ,1,8);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-    //murofondo
-    glPushMatrix();
-    glTranslated(3.5,0.0,-0.08);
-    glScaled(1,20,8);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-    //murofrente
-    glPushMatrix();
-    glTranslated(-3.5,0.0,-0.08);
-    glScaled(1,20,8);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-
-    //almenas
-    glPushMatrix();
-    glTranslated(3.5,2,-0.08);
-    glScaled(2,2,10);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(-3.5,2,-0.08);
-    glScaled(2,2,10);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(3.5,-2,-0.08);
-    glScaled(2,2,10);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(-3.5,-2,-0.08);
-    glScaled(2,2,10);
-    glutSolidCube(tamobj);
-    glPopMatrix();
-
-    glEndList();
 
 }
 
