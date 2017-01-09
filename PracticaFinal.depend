@@ -7,3 +7,15 @@
 	<math.h>
 	<fstream>
 
+1483913673 source:c:\users\ookie\desktop\new folder\gcupm\practicafinal.cpp
+	<GL/freeglut.h>
+	<cstdio>
+	<cstdlib>
+	<iostream>
+	<math.h>
+	<fstream>
+	<SDL/SDL.h>
+	<SDL/SDL_mixer.h>
+	<stdio.h>
+	<stdlib.h>
+
